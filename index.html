@@ -10,6 +10,7 @@
 <meta property="og:image" content="assets/logos/group-wordmark.png">
 <meta name="theme-color" content="#070708">
 <link rel="icon" type="image/png" href="assets/logos/q-mark.png">
+<script>try{if(sessionStorage.getItem("aqIntroSeen"))document.documentElement.classList.add("no-intro");sessionStorage.setItem("aqIntroSeen","1")}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&amp;family=Cormorant+Garamond:ital,wght@1,500;1,600&amp;family=Manrope:wght@400;500;600;700&amp;display=swap">
 <style>
@@ -147,10 +148,95 @@ html{scroll-behavior:smooth}
 @media (prefers-reduced-motion: reduce){
 *{animation:none !important;transition:none !important}
 }
+
+/* ---------- landing intro ---------- */
+@keyframes introExit{0%{transform:translateY(0)}99%{transform:translateY(-100%);visibility:visible}100%{transform:translateY(-100%);visibility:hidden}}
+@keyframes iTile{
+0%,29%{width:56px;height:56px;border-radius:16px;transform:translate(calc(var(--x)*6px),calc(var(--y)*6px));opacity:1}
+33%{width:56px;height:56px;border-radius:50%;transform:translate(calc(var(--x)*60px),calc(var(--y)*60px))}
+39%,42%{width:56px;height:56px;border-radius:16px;transform:translate(calc(var(--x)*6px),calc(var(--y)*6px))}
+57%,72%{width:50vw;height:50vh;border-radius:0;transform:translate(calc(var(--x)*1px),calc(var(--y)*1px))}
+82%{width:56px;height:56px;border-radius:16px;transform:translate(calc(var(--x)*6px),calc(var(--y)*6px));opacity:1}
+91%,100%{width:0;height:0;border-radius:16px;transform:translate(0,0);opacity:0}}
+@keyframes iPop{0%{transform:scale(0) rotate(-20deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes iLab{0%,56%{opacity:0;transform:translateY(16px)}60%,71%{opacity:1;transform:none}75%,100%{opacity:0;transform:translateY(-10px)}}
+@keyframes iDraw{from{stroke-dashoffset:1}to{stroke-dashoffset:0}}
+@keyframes iOut{to{opacity:0;transform:scale(.85)}}
+@keyframes iQ{0%{opacity:0;transform:scale(.2) rotate(-140deg)}70%{opacity:1;transform:scale(1.08) rotate(6deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes iWipe{0%{clip-path:inset(0 50% 0 50%);opacity:0;transform:scale(1.08)}100%{clip-path:inset(0 0 0 0);opacity:1;transform:none}}
+@keyframes iTag{0%{opacity:0;letter-spacing:1em;transform:translateY(10px)}100%{opacity:1;letter-spacing:.5em;transform:none}}
+@keyframes iBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes iFadeIn{from{opacity:0}to{opacity:1}}
+.skipbox{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.skipbox:checked ~ .intro{display:none}
+.no-intro .intro{display:none}
+.intro{position:fixed;inset:0;z-index:9999;background:#070708;overflow:hidden;animation:introExit .9s cubic-bezier(.8,0,.2,1) 5.8s forwards}
+.intro .i-tile{position:absolute;width:56px;height:56px;border-radius:16px;overflow:hidden;animation:iTile 3.6s cubic-bezier(.75,0,.2,1) both}
+.intro .i-pop{position:absolute;inset:0;animation:iPop .6s cubic-bezier(.2,1.5,.4,1) both}
+.intro .i-lab{position:absolute;display:flex;flex-direction:column;gap:8px;white-space:nowrap;animation:iLab 3.6s ease both}
+.intro .i-lab b{font-family:'Sora',sans-serif;font-weight:600;font-size:clamp(24px,4.2vw,56px);letter-spacing:-0.04em;line-height:1}
+.intro .i-lab span{font-size:clamp(10px,1vw,13px);font-weight:700;letter-spacing:.22em;text-transform:uppercase;opacity:.75}
+.intro .i-guide path,.intro .i-guide circle{stroke-dasharray:1;stroke-dashoffset:1;animation:iDraw .8s cubic-bezier(.6,0,.2,1) both}
+.intro .i-guide{animation:iOut .5s ease 4.35s forwards}
+.intro .i-q{animation:iQ .85s cubic-bezier(.2,.9,.3,1) 3.25s both,iOut .45s ease 4.3s forwards;filter:drop-shadow(0 0 40px rgba(34,176,125,.55))}
+.intro .i-wm{animation:iWipe .85s cubic-bezier(.7,0,.2,1) 4.25s both}
+.intro .i-tag{animation:iTag .8s cubic-bezier(.2,.8,.2,1) 4.75s both}
+.intro .i-skip{animation:iFadeIn .5s ease .4s both;transition:color .3s,border-color .3s,background-color .3s}
+.intro .i-skip:hover{color:#070708 !important;background:#F0D9A8 !important;border-color:#F0D9A8 !important}
+.intro .i-bar{transform-origin:left;animation:iBar 5.8s linear both}
+@media (prefers-reduced-motion: reduce){.intro{display:none !important}}
+@media (max-width: 700px){.intro .i-lab{white-space:normal;max-width:36vw;left:auto}.intro .i-lab span{display:none}.intro .i-lab b{font-size:21px;line-height:1.1}}
 </style>
 </head>
 <body>
 <div style="--gold: #D4B06A; background: #070708; color: #F5F0E6; font-family: 'Manrope', system-ui, sans-serif; overflow: hidden">
+<input type="checkbox" id="skipintro" class="skipbox" tabindex="-1" aria-hidden="true">
+<div class="intro">
+<div class="i-tile" style="--x: -1; --y: -1; right: 50%; bottom: 50%">
+<div class="i-pop" style="background: #22B07D; color: #062A1F; animation-delay: .1s">
+<div class="i-lab" style="left: 7vw; top: 10vh"><b>Marketing</b><span>Aqlyon Marketing Management · Dubai</span></div>
+</div>
+</div>
+<div class="i-tile" style="--x: 1; --y: -1; left: 50%; bottom: 50%">
+<div class="i-pop" style="background: #D4B06A; color: #070708; animation-delay: .25s">
+<div class="i-lab" style="right: 7vw; top: 10vh; align-items: flex-end; text-align: right"><b>Brand</b><span>Aqlyon Brand Management · Kerala</span></div>
+</div>
+</div>
+<div class="i-tile" style="--x: -1; --y: 1; right: 50%; top: 50%">
+<div class="i-pop" style="background: #F5F0E6; color: #070708; animation-delay: .4s">
+<div class="i-lab" style="left: 7vw; bottom: 10vh"><b>Career Discovery</b><span>Aqlyon Career Discovery Centre</span></div>
+</div>
+</div>
+<div class="i-tile" style="--x: 1; --y: 1; left: 50%; top: 50%">
+<div class="i-pop" style="background: #F07224; color: #070708; animation-delay: .55s">
+<div class="i-lab" style="right: 7vw; bottom: 10vh; align-items: flex-end; text-align: right"><b>Technology</b><span>Codewyn Technologies · Kerala</span></div>
+</div>
+</div>
+<div style="position: absolute; left: 50%; top: 50%; width: 360px; height: 360px; margin: -180px 0 0 -180px; pointer-events: none">
+<svg class="i-guide" width="360" height="360" viewBox="0 0 360 360" fill="none" stroke="rgba(240,217,168,.55)" stroke-width="1" style="display: block; overflow: visible">
+<circle cx="180" cy="180" r="150" pathLength="1" style="animation-delay: 2.75s"></circle>
+<circle cx="180" cy="180" r="96" pathLength="1" style="animation-delay: 2.85s"></circle>
+<path d="M-60 180 H420" pathLength="1" style="animation-delay: 2.8s"></path>
+<path d="M180 -60 V420" pathLength="1" style="animation-delay: 2.9s"></path>
+<path d="M40 40 L320 320" pathLength="1" stroke="rgba(240,217,168,.3)" style="animation-delay: 3s"></path>
+<path d="M320 40 L40 320" pathLength="1" stroke="rgba(240,217,168,.3)" style="animation-delay: 3.05s"></path>
+<circle cx="30" cy="180" r="5" pathLength="1" stroke="#F0D9A8" style="animation-delay: 3.1s"></circle>
+<circle cx="330" cy="180" r="5" pathLength="1" stroke="#F0D9A8" style="animation-delay: 3.15s"></circle>
+<circle cx="180" cy="30" r="5" pathLength="1" stroke="#F0D9A8" style="animation-delay: 3.2s"></circle>
+<circle cx="180" cy="330" r="5" pathLength="1" stroke="#F0D9A8" style="animation-delay: 3.25s"></circle>
+</svg>
+</div>
+<div style="position: absolute; left: 50%; top: 50%; width: 170px; margin: -85px 0 0 -85px; pointer-events: none">
+<img class="i-q" src="assets/logos/q-mark.png" alt="" style="display: block; width: 170px; height: auto">
+</div>
+<div style="position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; align-items: center; gap: 26px; pointer-events: none">
+<img class="i-wm" src="assets/logos/group-wordmark-light.png" alt="Aqlyon" style="display: block; width: min(520px, 78vw); height: auto">
+<div class="i-tag" style="font-family: 'Sora', sans-serif; font-weight: 600; font-size: clamp(11px, 1.4vw, 16px); letter-spacing: .5em; margin-right: -.5em; color: #D4B06A">GROUP OF COMPANIES</div>
+</div>
+<label for="skipintro" class="i-skip" style="position: absolute; right: 24px; bottom: 26px; z-index: 2; cursor: pointer; font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 500; color: #F5F0E6; border: 1px solid rgba(240,217,168,.35); background: rgba(7,7,8,.6); backdrop-filter: blur(8px); border-radius: 999px; padding: 11px 18px; min-height: 44px; box-sizing: border-box; display: inline-flex; align-items: center; gap: 8px">Skip intro <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></label>
+<div class="i-bar" aria-hidden="true" style="position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: linear-gradient(90deg, #22B07D, #D4B06A, #F07224)"></div>
+</div>
+
 
 <!-- ======================= HERO ======================= -->
 <section id="top" class="hero-sec" style="position: relative; min-height: 980px; padding-bottom: 60px">
